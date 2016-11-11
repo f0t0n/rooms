@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Units List
+{% endblock title %}
+
+{% block page_title %}
+    <div class="row">
+      <div class="col-md-12 col-xs-12">
+          <h1>Units List</h1>
+      </div>
+    </div>
+{% endblock page_title %}
+
+{% block body %}
+<div class="span6">
+    <ul>
+    {% for unit in units: %}
+        <li>
+            {{ unit['name'] }}
+            <ol>
+                {% for room in unit['rooms'] %}
+                    <li>{{ room['width'] }}x{{ room['length'] }}
+                {% endfor %}
+            </ol>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock body %}
+
+{% block tail %}
+    <script type="text/javascript"
+        src="{{ request.app.router['static'].url(filename='js/app.js') }}" >
+    </script>
+{% endblock tail %}
+

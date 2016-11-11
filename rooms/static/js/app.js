@@ -1,30 +1,76 @@
 $(function() {
-    var $from = $('#unit-from'),
+    var $form = $('#unit-from'),
         $name = $('#name'),
-        $size = $('#size'),
+        $width = $('#width'),
+        $length = $('#length'),
         $calculate = $('#calculate'),
         $submit = $('#submit'),
-        $results = $('#results');
+        $results = $('#results')
+        rooms = null;
 
     var getUnitData = function() {
-        return {size: $size.val()};
+        return {name: $name.val(), width: $width.val(), length: $length.val()};
+    };
+
+
+    var createList = function(items) {
+        var $ul = $('<ul>');
+        $.each(items, function(i, item) {
+            var $li = $('<li>');
+            $li.text(item);
+            $ul.append($li);
+        });
+        return $ul;
     };
 
     var renderResults = function(results) {
-        var $ul = $('<ul>');
-        $.each(results, function(room) {
-            var $li = $('<li>');
-            $li.text('room size here');
-            $ul.append($li);
+        rooms = results;
+        var items = $.map(results, function(item) {
+            return item[0] + 'x' + item[1];
         });
-        $results.html($ul);
+        $results.html(createList(items));
+    };
+
+    var renderError = function(jqXHR, textStatus, errorThrown) {
+        $results.html(createList([errorThrown]));
     };
 
     var calculate = function(e) {
         e.preventDefault();
-        $.getJSON('/units/calculate', getUnitData(), renderResults);
+        rooms = null;
+        $.getJSON('/units/calculate', getUnitData())
+            .done(renderResults)
+            .fail(renderError);
+    };
+
+    var saveUnit = function(e) {
+        e.preventDefault();
+        if(! rooms) {
+            alert('Please calculate first.');
+            return false;
+        }
+        unitData = getUnitData();
+        unitData.rooms = rooms;
+        $.ajax({
+            url: '/units',
+            type: 'POST',
+            data: JSON.stringify(unitData),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(unit) {
+                rooms = null;
+                console.log(unit);
+                window.location.href = '/units-list';
+                // window.location.href = '/units/' + unit.id;
+            },
+            error: function(jqXHR, testStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
     };
 
     $('#calculate').on('click', calculate);
+
+    $submit.on('click', saveUnit);
 });
 
