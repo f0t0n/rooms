@@ -1,0 +1,38 @@
+---
+  version: '2'
+
+  services:
+    rooms:
+      build: .
+      volumes:
+        - ./:/usr/local/app:rw # mount source code
+      ports:
+        - 8080:8080
+      environment:
+        PYTHONUNBUFFERED: 1
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
+        POSTGRES_USER: rooms
+        POSTGRES_PASSWORD: rooms
+        POSTGRES_DB: rooms
+
+
+    postgres:
+      image: postgres:9.5
+      volumes:
+        - postgres_data:/var/lib/postgresql/data:rw
+        - ./postgres-init:/docker-entrypoint-initdb.d:ro
+      ports:
+        - 5432:5432
+      environment:
+        PGDATA: /var/lib/postgresql/data/pgdata
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
+        POSTGRES_USER: rooms
+        POSTGRES_PASSWORD: rooms
+        POSTGRES_DB: rooms
+
+  volumes:
+    postgres_data:
+      driver: local
+

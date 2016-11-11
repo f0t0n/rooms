@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Create Unit
+{% endblock title %}
+
+{% block page_title %}
+    <div class="row">
+      <div class="col-md-12 col-xs-12">
+          <h1>Create Unit</h1>
+      </div>
+    </div>
+{% endblock page_title %}
+
+{% block body %}
+<div class="span6">
+<form id="unit-form"
+        method="POST"
+        action="{{ request.app.router['create_unit'].url() }}"
+        class="span4">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" />
+    <label for="size">Size:</label>
+    <input type="text" name="size" id="size" />
+    <hr>
+    <div id="results" class="span4"></div>
+
+    <input type="button" name="calculate" id="calculate" class="btn btn-default"
+        value="Calculate" />
+    <input type="submit" name="submit" id="submit" class="btn btn-success"
+        value="Save" />
+</form>
+</div>
+
+{% endblock body %}
+
+{% block tail %}
+    <script type="text/javascript"
+        src="{{ request.app.router['static'].url(filename='js/app.js') }}" >
+    </script>
+{% endblock tail %}
+
