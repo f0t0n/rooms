@@ -1,0 +1,17 @@
+*.py[cod]
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Backup files
+*~
+
+# Tests
+.coverage
+.cache
+cover
+htmlcov
+
+# local pip cache
+/.pip-cache
