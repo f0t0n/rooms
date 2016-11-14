@@ -31,18 +31,6 @@ async def get_db(config: dict):
     return await create_engine(**config)
 
 
-async def init(app):
-    app.init_db(await get_db())
-    app.on_cleanup.append(close_engine)
-    return app
-
-
-async def get_connection(**db_config):
-    engine = await create_engine(**db_config)
-    connection = await engine.acquire()
-    return engine, connection
-
-
 async def close_engine(app):
     app.logger.info('Gonna close DB connection...')
     app.db.close()

@@ -59,9 +59,7 @@ $(function() {
             dataType: 'json',
             success: function(unit) {
                 rooms = null;
-                console.log(unit);
-                window.location.href = '/units-list';
-                // window.location.href = '/units/' + unit.id;
+                window.location.href = '/units';
             },
             error: function(jqXHR, testStatus, errorThrown) {
                 alert(errorThrown);

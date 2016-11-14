@@ -14,6 +14,12 @@
 
 {% block body %}
 <div class="span6">
+    <a href="{{ request.app.router['new_unit'].url() }}"
+        class="btn btn-success">
+        <i class="glyphicon glyphicon-plus"></i>
+        Create New
+    </a>
+    <hr>
     <ul>
     {% for unit in units: %}
         <li>

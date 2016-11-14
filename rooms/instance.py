@@ -6,7 +6,7 @@ import os
 import aiohttp
 from os import getenv
 from aiohttp import web
-from rooms.db.core.utils import get_db
+from rooms.db.core.utils import get_db, close_engine
 from rooms.db.unit import action as unit_action
 from rooms.db.room import action as room_action
 
@@ -129,6 +129,7 @@ async def create_application(loop):
     app = App(loop=loop)
     app.configure(config)
     app.init_db(db)
+    app.on_cleanup.append(close_engine)
 
     curr_dir = os.path.dirname(os.path.realpath(__file__))
     tpl_dir = os.path.join(curr_dir, 'templates')
